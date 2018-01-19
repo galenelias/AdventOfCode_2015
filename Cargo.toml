@@ -6,6 +6,7 @@ authors = ["Galen Elias <gelias@gmail.com>"]
 [dependencies]
 clap = "*"
 regex = "*"
+itertools = "*"
 
 [[bin]]
 name = "aoc"
