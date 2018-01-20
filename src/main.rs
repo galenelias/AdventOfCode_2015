@@ -4,8 +4,8 @@
 
 extern crate clap;
 extern crate regex;
+extern crate md5;
 
-#[macro_use]
 extern crate itertools;
 
 use clap::{Arg,App};
@@ -13,6 +13,7 @@ use clap::{Arg,App};
 mod day1;
 mod day2;
 mod day3;
+mod day4;
 
 fn main() {
 
@@ -46,6 +47,7 @@ fn main() {
 		1 => day1::solve(),
 		2 => day2::solve(),
 		3 => day3::solve(),
+		4 => day4::solve(),
 
 		_ => println!("Oops! Day {} isn't implemented yet!", day)
 	}
