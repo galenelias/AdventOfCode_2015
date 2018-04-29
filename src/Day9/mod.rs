@@ -6,6 +6,8 @@ use permutohedron::LexicalPermutation;
 fn calc_route_distance(cities: &[String], distances: &HashMap<(String,String), u32>) -> u32 {
 	let mut dist: u32 = 0;
 	for i in 0..cities.len()-1 {
+		// TODO: More efficient lookups. These clones will be terrible.
+		//  HashMap<&str,&str>?
 		dist += distances.get(&(cities[i].clone(), cities[i+1].clone())).unwrap();
 	}
 	return dist;
