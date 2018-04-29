@@ -8,6 +8,7 @@ clap = "*"
 regex = "*"
 itertools = "*"
 md5 = "*"
+permutohedron = "*"
 
 [[bin]]
 name = "aoc"
