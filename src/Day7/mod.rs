@@ -58,6 +58,12 @@ pub fn solve() {
 		rules.insert(line[1].clone(), line[0].clone());
 	}
 
-	let mut memo = HashMap::new();
-	println!("Part 1: {}", get_wire_value("a", &rules, &mut memo));
+	let mut memo_p1 = HashMap::new();
+	let wire_a_p1 = get_wire_value("a", &rules, &mut memo_p1);
+	println!("Part 1: {}", wire_a_p1);
+
+	let mut memo_p2 = HashMap::new();
+	memo_p2.insert("b".to_string(), wire_a_p1);
+	let wire_a_p2 = get_wire_value("a", &rules, &mut memo_p2);
+	println!("Part 2: {}", wire_a_p2);
 }
