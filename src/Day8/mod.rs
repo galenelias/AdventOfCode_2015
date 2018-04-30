@@ -25,6 +25,25 @@ fn decode(input: &str) -> String {
 	return decoded;
 }
 
+fn encode(input: &str) -> String {
+	let mut it = input.chars();
+	let mut encoded = String::new();
+
+	encoded.push('\"');
+	while let Some(ch) = it.next() {
+		if ch == '"' {
+			encoded.push_str("\\\"");
+		} else if ch == '\\' {
+			encoded.push_str("\\\\");
+		} else {
+			encoded.push(ch);
+		}
+	}
+	encoded.push('\"');
+
+	return encoded;
+}
+
 pub fn solve() {
 	let stdin = io::stdin();
 	let lines: Vec<String> = stdin.lock().lines()
@@ -35,7 +54,7 @@ pub fn solve() {
 		println!("{}", line)
 	}
 
-	for line in lines.iter().map(|l| decode(l)) {
+	for line in lines.iter().map(|l| encode(l)) {
 		println!("{}", line)
 	}
 
@@ -43,4 +62,8 @@ pub fn solve() {
 	let decoded = lines.iter().map(|l| decode(l)).map(|l| l.len()).sum::<usize>();
 	let part1 = original - decoded;
 	println!("Part 1: {} ({} - {})", part1, original, decoded);
+
+	let encoded = lines.iter().map(|l| encode(l)).map(|l| l.len()).sum::<usize>();
+	let part2 = encoded - original;
+	println!("Part 2: {} ({} - {})", part2, encoded, original);
 }
