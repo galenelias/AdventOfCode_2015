@@ -2,6 +2,50 @@ use std::io::{self, BufRead};
 use std::collections::HashMap;
 use itertools::Itertools;
 
+fn get_wire_value(name: &str, rules: &HashMap<String, String>, memo: &mut HashMap<String, u16>) -> u16 {
+	// Might be a literal value rather than a wire name, or maybe we remember the result
+	if let Ok(val) = name.parse::<u16>() {
+		return val;
+	} else if let Some(val) = memo.get(name) {
+		return *val;
+	}
+
+	let rule = rules.get(name).unwrap();
+	let result: u16;
+	if let Ok(val) = rule.parse::<u16>() {
+		return val;
+	} else if rule.contains("AND") {
+		let parts = rule.split(" AND ").collect_vec();
+		let val1 = get_wire_value(parts[0], rules, memo);
+		let val2 = get_wire_value(parts[1], rules, memo);
+		result = val1 & val2;
+	} else if rule.contains("OR") {
+		let parts = rule.split(" OR ").collect_vec();
+		let val1 = get_wire_value(parts[0], rules, memo);
+		let val2 = get_wire_value(parts[1], rules, memo);
+		result = val1 | val2;
+	} else if rule.contains("LSHIFT") {
+		let parts = rule.split(" LSHIFT ").collect_vec();
+		let val1 = get_wire_value(parts[0], rules, memo);
+		let val2 = parts[1].parse::<u16>().unwrap();
+		result = val1 << val2;
+	} else if rule.contains("RSHIFT") {
+		let parts = rule.split(" RSHIFT ").collect_vec();
+		let val1 = get_wire_value(parts[0], rules, memo);
+		let val2 = parts[1].parse::<u16>().unwrap();
+		result = val1 >> val2;
+	} else if rule.contains("NOT") {
+		let parts = rule.split("NOT ").collect_vec();
+		let val1 = get_wire_value(parts[1], rules, memo);
+		result = !val1;
+	} else {
+		result = get_wire_value(rule, rules, memo);
+	}
+
+	memo.insert(name.to_string(), result);
+	result
+}
+
 pub fn solve() {
 	let stdin = io::stdin();
 	let lines: Vec<Vec<_>> = stdin.lock().lines()
@@ -9,48 +53,11 @@ pub fn solve() {
 		.map(|line| line.split(" -> ").map(String::from).collect_vec())
 		.collect::<Vec<_>>();
 
-	let mut wires = HashMap::new();
-
+	let mut rules = HashMap::new();
 	for line in lines {
-		if let Ok(val) = line[0].parse::<u16>() {
-			let wire = line[1].clone();
-			wires.insert(wire, val);
-		}
-		else if line[0].contains("AND") {
-			let parts = line[0].split(" AND ").collect_vec();
-			let val1 = wires.get(parts[0]).unwrap().clone();
-			let val2 = wires.get(parts[1]).unwrap().clone();
-			wires.insert(line[1].clone(), val1 & val2);
-		}
-		else if line[0].contains("OR") {
-			let parts = line[0].split(" OR ").collect_vec();
-			let val1 = wires.get(parts[0]).unwrap().clone();
-			let val2 = wires.get(parts[1]).unwrap().clone();
-			wires.insert(line[1].clone(), val1 | val2);
-		}
-		else if line[0].contains("LSHIFT") {
-			let parts = line[0].split(" LSHIFT ").collect_vec();
-			let val1 = wires.get(parts[0]).unwrap().clone();
-			let val2 = parts[1].parse::<u16>().unwrap();
-			wires.insert(line[1].clone(), val1 << val2);
-		}
-		else if line[0].contains("RSHIFT") {
-			let parts = line[0].split(" RSHIFT ").collect_vec();
-			let val1 = wires.get(parts[0]).unwrap().clone();
-			let val2 = parts[1].parse::<u16>().unwrap();
-			wires.insert(line[1].clone(), val1 >> val2);
-		}
-		else if line[0].contains("NOT") {
-			let parts = line[0].split("NOT ").collect_vec();
-			let val1 = wires.get(parts[1]).unwrap().clone();
-			wires.insert(line[1].clone(), !val1);
-		}
-		else {
-			println!("Unprocessed line: {}", line[0]);
-		}
+		rules.insert(line[1].clone(), line[0].clone());
 	}
 
-	for (k,v) in wires {
-		println!("{} -> {}", k, v);
-	}
+	let mut memo = HashMap::new();
+	println!("Part 1: {}", get_wire_value("a", &rules, &mut memo));
 }
