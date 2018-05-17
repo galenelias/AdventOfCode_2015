@@ -24,14 +24,12 @@ pub fn solve() {
 		cities.insert(line[2].clone());
 	}
 
-	let cities_vec = cities.iter().collect_vec();
 	let mut cities_idx_map = HashMap::new();
-	for (i, val) in cities_vec.iter().enumerate() {
-		cities_idx_map.insert(val.clone(), i);
+	for (i, val) in cities.iter().enumerate() {
+		cities_idx_map.insert(val, i);
 	}
 
-	let mut distances = vec![vec![0; cities_vec.len()]; cities_vec.len()];
-
+	let mut distances = vec![vec![0; cities.len()]; cities.len()];
 	for line in &lines {
 		let city1_ord = cities_idx_map.get(&line[0]).unwrap();
 		let city2_ord = cities_idx_map.get(&line[2]).unwrap();
@@ -40,12 +38,12 @@ pub fn solve() {
 		distances[*city2_ord][*city1_ord] = dist;
 	}
 
-	let mut cities_vec_nums = (0..cities_vec.len()).collect_vec();
+	let mut cities_vec = (0..cities.len()).collect_vec();
 	let mut min_distance: Option<u32> = None;
 	let mut max_distance: Option<u32> = None;
 
 	loop {
-		let dist = calc_route_distance(&cities_vec_nums[..], &distances);
+		let dist = calc_route_distance(&cities_vec[..], &distances);
 		if min_distance.is_none() || dist < min_distance.unwrap() {
 			min_distance = Some(dist);
 		}
@@ -54,7 +52,7 @@ pub fn solve() {
 			max_distance = Some(dist);
 		}
 
-		if !cities_vec_nums.next_permutation() {
+		if !cities_vec.next_permutation() {
 			break;
 		}
 	}
