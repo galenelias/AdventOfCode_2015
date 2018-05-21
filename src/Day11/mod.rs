@@ -57,5 +57,7 @@ pub fn solve() {
 	for line in lines {
 		let pwd = find_next_valid_password(line.clone());
 		println!("Part 1: {} -> {}", line.iter().collect::<String>(), pwd.iter().collect::<String>());
+		let pwd = find_next_valid_password(increment_pwd(pwd));
+		println!("Part 2: {}", pwd.iter().collect::<String>());
 	}
 }
