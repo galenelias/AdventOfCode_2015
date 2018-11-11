@@ -1,7 +1,3 @@
-#![feature(slice_rotate)]
-#![feature(iterator_step_by)]
-#![feature(iterator_try_fold)]
-
 extern crate clap;
 extern crate regex;
 extern crate md5;
@@ -23,6 +19,7 @@ mod day9;
 mod day10;
 mod day11;
 mod day12;
+mod day13;
 
 fn main() {
 
@@ -65,6 +62,7 @@ fn main() {
 		10 => day10::solve(),
 		11 => day11::solve(),
 		12 => day12::solve(),
+		13 => day13::solve(),
 
 		_ => println!("Oops! Day {} isn't implemented yet!", day)
 	}
