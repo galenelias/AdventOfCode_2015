@@ -37,7 +37,7 @@ fn step_grid(grid_in: &Vec<Vec<bool>>, part2: bool) -> Vec<Vec<bool>> {
 	return grid_out;
 }
 
-fn print_grid(grid: &Vec<Vec<bool>>) {
+fn _print_grid(grid: &Vec<Vec<bool>>) {
 	for row in grid {
 		println!("{}", row.iter().map(|b| if *b { '#' } else { '.'}).collect::<String>());
 	}
