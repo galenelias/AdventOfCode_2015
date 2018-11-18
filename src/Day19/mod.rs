@@ -2,9 +2,7 @@ use std::io::{self, BufRead};
 use itertools::Itertools;
 use std::collections::{HashSet, HashMap};
 
-fn do_replacements(seed: &str, replacements: &HashMap<String, Vec<String>>, max_key_len: usize) -> HashSet<String> {
-	let mut outcomes = HashSet::new();
-
+fn do_replacements(seed: &str, replacements: &HashMap<String, Vec<String>>, max_key_len: usize, output: &mut HashSet<String>)  {
 	for i in 0..seed.len() {
 		for j in 1..=max_key_len {
 			if i + j > seed.len() {
@@ -18,13 +16,38 @@ fn do_replacements(seed: &str, replacements: &HashMap<String, Vec<String>>, max_
 					new_string.push_str(&val);
 					new_string.push_str(&seed[i+j..]);
 
-					outcomes.insert(new_string);
+					output.insert(new_string);
 				}
 			}
 		}
 	}
+}
 
-	return outcomes;
+// Find the largest replacement, and do that
+fn replace_greedy(seed: &str, replacements: &HashMap<String, Vec<String>>, max_key_len: usize) -> String  {
+	let mut result = String::new();
+	let mut longest_replacement = 0;
+
+	for i in 0..seed.len() {
+		for j in longest_replacement+1..=max_key_len {
+			if i + j > seed.len() {
+				continue;
+			}
+
+			let x = seed[i..i+j].to_string();
+			if let Some(vals) = replacements.get(&x) {
+				for val in vals {
+					let mut new_string = seed[..i].to_string();
+					new_string.push_str(&val);
+					new_string.push_str(&seed[i+j..]);
+
+					result = new_string;
+					longest_replacement = j;
+				}
+			}
+		}
+	}
+	return result;
 }
 
 pub fn solve() {
@@ -34,55 +57,35 @@ pub fn solve() {
 		.collect_vec();
 
 	let mut replacements : HashMap<String, Vec<String>> = HashMap::new();
-	let mut max_key_len = 0;
+	let mut inv_replacements : HashMap<String, Vec<String>> = HashMap::new();
+	let mut max_key_len1 = 0;
+	let mut max_key_len2 = 0;
 
 	for line in &lines {
 		let parts = line.split(" => ").map(|s| s.to_string()).collect_vec();
-		// println!("{:?}", parts);
 		if parts.len() > 1 {
-			max_key_len = std::cmp::max(max_key_len, parts[0].len());
+			max_key_len1 = std::cmp::max(max_key_len1, parts[0].len());
+			max_key_len2 = std::cmp::max(max_key_len2, parts[1].len());
 			replacements.entry(parts[0].clone()).or_insert(Vec::new()).push(parts[1].clone());
+			inv_replacements.entry(parts[1].clone()).or_insert(Vec::new()).push(parts[0].clone());
 		}
 	}
 
-
-	// println!("{}", max_key_len);
-	// println!("{}", lines.last().unwrap());
 	let medicine_molecule = lines.last().unwrap();
-	let part1 = do_replacements(medicine_molecule, &replacements, max_key_len);
+	let mut part1 = HashSet::new();
+	do_replacements(medicine_molecule, &replacements, max_key_len1, &mut part1);
 	println!("Part 1: {}", part1.len());
 
-
 	let mut steps = 0;
-	let mut molecules = HashSet::new();
-	// molecules.insert("e".to_string());
-
-	let mut queue = Vec::new();
-	queue.push("e".to_string());
-
+	let mut m = medicine_molecule.clone();
 	loop {
 		steps += 1;
-		let mut new_molecules = Vec::new();
+		m = replace_greedy(&m, &inv_replacements, max_key_len2);
 
-		for mol in queue {
-			let mut outputs = do_replacements(&mol, &replacements, max_key_len);
-			for out in outputs {
-				if out.len() <= medicine_molecule.len() && molecules.insert(out.clone()) {
-					if new_molecules.is_empty() {
-						println!("{}", out);
-					}
-					new_molecules.push(out);
-				}
-			}
-		}
-
-		println!("Step {}, molecules={}, queue={}", steps, molecules.len(), new_molecules.len());
-		if molecules.contains(medicine_molecule) {
+		if m == "e" {
 			break;
 		}
-		queue = new_molecules;
 	}
 
 	println!("Part 2: {}", steps);
-
 }
