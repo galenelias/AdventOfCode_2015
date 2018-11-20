@@ -1,5 +1,4 @@
 use std::io::{self, BufRead};
-use itertools::Itertools;
 
 fn get_score(num: u32) -> u32 {
 	let mut score = 0;
