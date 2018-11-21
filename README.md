@@ -1,7 +1,30 @@
-# Advent Of Code 2017
-Dumping ground for Advent of Code 2017 solutions in various languages (C++, Rust, F#)
+# Advent Of Code 2015
+Repository for my [Advent of Code 2015](https://adventofcode.com/2015/) solutions in Rust
 
-| Problem              | Rust                  |
-|----------------------|-----------------------|
-| [Day 1](src/Day1/)   | [✔](src/Day1/mod.rs) |
-| [Day 2](src/Day2/)   | [✔](src/Day2/mod.rs) |
+    cargo run --release -- $DAY < inputs/day$DAY.txt
+
+* [Day 1: Not Quite Lisp](src/Day1/mod.rs)
+* [Day 2: I Was Told There Would Be No Math](src/Day2/mod.rs)
+* [Day 3: Perfectly Spherical Houses in a Vacuum](src/Day3/mod.rs)
+* [Day 4: The Ideal Stocking Stuffer](src/Day4/mod.rs)
+* [Day 5: Doesn't He Have Intern-Elves For This?](src/Day5/mod.rs)
+* [Day 6: Probably a Fire Hazard](src/Day6/mod.rs)
+* [Day 7: Some Assembly Required](src/Day7/mod.rs)
+* [Day 8: Matchsticks](src/Day8/mod.rs)
+* [Day 9: All in a Single Night](src/Day9/mod.rs)
+* [Day 10: Elves Look, Elves Say](src/Day10/mod.rs)
+* [Day 11: Corporate Policy](src/Day11/mod.rs)
+* [Day 12: JSAbacusFramework.io](src/Day12/mod.rs)
+* [Day 13: Knights of the Dinner Table](src/Day13/mod.rs)
+* [Day 14: Reindeer Olympics](src/Day14/mod.rs)
+* [Day 15: Science for Hungry People](src/Day15/mod.rs)
+* [Day 16: Aunt Sue](src/Day16/mod.rs)
+* [Day 17: No Such Thing as Too Much](src/Day17/mod.rs)
+* [Day 18: Like a GIF For Your Yard](src/Day18/mod.rs)
+* [Day 19: Medicine for Rudolph](src/Day19/mod.rs)
+* [Day 20: Infinite Elves and Infinite Houses](src/Day20/mod.rs)
+* [Day 21: RPG Simulator 20XX](src/Day21/mod.rs)
+* [Day 22: Wizard Simulator 20XX](src/Day22/mod.rs)
+* [Day 23: Opening the Turing Lock](src/Day23/mod.rs)
+* [Day 24: It Hangs in the Balance](src/Day24/mod.rs)
+* [Day 25: Let It Snow](src/Day25/mod.rs)
