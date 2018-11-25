@@ -9,6 +9,9 @@ regex = "*"
 itertools = "*"
 md5 = "*"
 permutohedron = "*"
+serde = "*"
+serde_json = "*"
+serde_derive = "*"
 
 [[bin]]
 name = "aoc"

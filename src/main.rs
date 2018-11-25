@@ -2,8 +2,8 @@ extern crate clap;
 extern crate regex;
 extern crate md5;
 extern crate permutohedron;
-
 extern crate itertools;
+extern crate serde_json;
 
 use clap::{Arg,App};
 
